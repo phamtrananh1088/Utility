@@ -103,7 +103,7 @@ namespace GenEntity
             sbSQL.AppendLine("         then '?'                                                                                                                                 ");
             sbSQL.AppendLine("         else ''                                                                                                                                  ");
             sbSQL.AppendLine("       end NullableSign,                                                                                                                          ");
-            sbSQL.AppendLine("       col.max_length ColumnSize,                                                                                                                 ");
+            sbSQL.AppendLine("       case typ.name when 'nvarchar' then col.max_length/2 else col.max_length/1 end ColumnSize,                                                    ");
             sbSQL.AppendLine("       case typ.name                                                                                                                              ");
             sbSQL.AppendLine("             when 'bigint' then 'BigInt'                                                                                                          ");
             sbSQL.AppendLine("             when 'binary' then 'VarBinary'                                                                                                       ");
@@ -231,7 +231,7 @@ namespace GenEntity
                     ColumnName = item["ColumnName"].ToString(),
                     ColumnType = item["ColumnType"].ToString(),
                     NullableSign = item["NullableSign"].ToString(),
-                    ColumnSize = (short)item["ColumnSize"],
+                    ColumnSize = (int)item["ColumnSize"],
                     SqlDbType = item["SqlDbType"].ToString(),
                     SqlDataReaderType = item["SqlDataReaderType"].ToString(),
                     SqlServerType = item["SqlServerType"].ToString(),
@@ -270,7 +270,7 @@ namespace GenEntity
                     ColumnName = item["ColumnName"].ToString(),
                     ColumnType = item["ColumnType"].ToString(),
                     NullableSign = item["NullableSign"].ToString(),
-                    ColumnSize = (short)item["ColumnSize"],
+                    ColumnSize = (int)item["ColumnSize"],
                     SqlDbType = item["SqlDbType"].ToString(),
                     SqlDataReaderType = item["SqlDataReaderType"].ToString(),
                     SqlServerType = item["SqlServerType"].ToString(),
@@ -300,11 +300,11 @@ namespace GenEntity
             public string ColumnName { get; set; }
             public string ColumnType { get; set; }
             public string NullableSign { get; set; }
-            public short ColumnSize { get; set; }
+            public int ColumnSize { get; set; }
             public string SqlDbType { get; set; }
             public string SqlDataReaderType { get; set; }
             public string SqlServerType { get; set; }
-            public short MaxLength {
+            public int MaxLength {
                 get
                 {
                     if (SqlServerType== "ntext")
